@@ -1,0 +1,15 @@
+robot_project/
+|--
+|--- main.py
+|--- models/
+|   |--- __init__.py
+|   |--- robot_model.py
+|--- kinematics/
+|   |--- __init__.py
+|   |--- forward.py
+|---utils/
+|   |--- __init__.py
+|   |--- math_utils.py
+|---config/
+    |--- __init__.py
+    |--- robot_config.py

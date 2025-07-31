@@ -1,0 +1,12 @@
+from abc import ABC, abstractmethod
+import numpy as np
+
+class RobotBase(ABC):
+    def __init__(self, lam: np.ndarray, d: np.ndarray):
+        self.lam = lam
+        self.d = d
+
+    @abstractmethod
+    def fk(self, q: np.ndarray, k: int = None):
+        """Compute forward kinematics."""
+        pass

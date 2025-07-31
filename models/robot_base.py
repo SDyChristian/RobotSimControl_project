@@ -7,6 +7,6 @@ class RobotBase(ABC):
         self.d = d
 
     @abstractmethod
-    def fk(self, q: np.ndarray, k: int = None):
+    def forwardKin(self, q: np.ndarray, k: int = None):
         """Compute forward kinematics."""
         pass

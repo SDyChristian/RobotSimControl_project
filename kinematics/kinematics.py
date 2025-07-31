@@ -1,7 +1,7 @@
 import numpy as np
 from utils.math_utils import skew
 
-class ForwardKinematics:
+class Kinematics:
     def __init__(self, lam: np.ndarray, d: np.ndarray) -> None:
         """
         Initialize the object ForwardKinematics with 'lam' matrix and 'd' matrix
@@ -20,7 +20,7 @@ class ForwardKinematics:
         self.lam = lam
         self.d = d
 
-    def compute(self, k: int, q: np.ndarray) -> np.ndarray:
+    def computeFK(self, k: int, q: np.ndarray) -> np.ndarray:
         """
         Computes the forward kinematics from frame 0 to frame k.
 

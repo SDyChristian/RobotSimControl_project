@@ -15,3 +15,8 @@ class RobotBase(ABC):
     def geoJac(self, q: np.ndarray, k: int = None):
         """Compute forward kinematics."""
         pass
+
+    @abstractmethod
+    def AnaJac(self, q: np.ndarray, k: int = None):
+        """Compute forward kinematics."""
+        pass

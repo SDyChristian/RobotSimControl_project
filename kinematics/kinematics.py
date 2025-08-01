@@ -1,5 +1,6 @@
 import numpy as np
 from utils.math_utils import skew
+from utils.AttitudeConversion import Jth_RPY, R2RPY
 
 class Kinematics:
     def __init__(self, lam: np.ndarray, d: np.ndarray) -> None:
@@ -56,15 +57,13 @@ class Kinematics:
 
         return T
     
-    def compute_geometricJacobian(self, k: int, q: np.ndarray, dq: np.ndarray, ) -> np.ndarray:
+    def compute_geometricJacobian(self, k: int, q: np.ndarray ) -> np.ndarray:
         """
         Computes the Geometric Jacobian from frame 0 to frame k.
 
         Args:
             k (int): Index of the frame up to which the Geometric Jacobian is computed.
             q (np.ndarray): Generalized coordinates vector (e.g., joint angles).
-            dq (np.ndarray): Generalized velocity vector.
-
         Returns:
             np.ndarray: Resulting 6x6 Geometric Jacobian matrix.
         """
@@ -97,3 +96,27 @@ class Kinematics:
             Jg_k = X@Jg_k + LAM
         
         return Jg_k
+    
+    def compute_AnalyticJacobian(self, k: int, q: np.ndarray) -> np.ndarray:
+
+        # Get Geometric Jacobian
+        Jg = self.compute_geometricJacobian(6,q)
+
+        # Get Forward Kinematics
+        T = self.computeFK(k, q)
+        # Get RPY angles
+        th = R2RPY(T[:3,:3])
+        # Get Attitude Operator
+        Jth0 = Jth_RPY(th)
+
+        # --- Compute Jx of \nu = Jx dx ---
+        Jx0 = np.block([
+            [     T[:3,:3].T, np.zeros((3,3))],
+            [np.zeros((3,3)), T[:3,:3].T@Jth0]
+        ])
+        # --- ---
+
+        # Compute Analytic Jacobian Ja
+        Ja = np.linalg.inv(Jx0)*Jg
+
+        return Ja

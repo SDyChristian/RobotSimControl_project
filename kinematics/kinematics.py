@@ -46,12 +46,54 @@ class Kinematics:
 
         for i in range(k):
             S = skew(LamR[i,:3])
-            R = np.eye(3) + S * np.sin(q[i]) + S @ S * (1 - np.cos(q[i]))
-            di = self.d[i,:3].reshape(3, 1)
+            R0i = np.eye(3) + S * np.sin(q[i]) + S @ S * (1 - np.cos(q[i]))
+            d0i = self.d[i,:3].reshape(3, 1)
             Ti = np.block([
-                [R, di + LamT[i].reshape(3, 1) * q[i]],
-                [np.zeros((1, 3)), 1]
+                [               R0i, d0i + LamT[i].reshape(3, 1) * q[i] ],
+                [np.zeros((1, 3)),                                 1 ]
             ])
             T = T @ Ti
 
         return T
+    
+    def compute_geometricJacobian(self, k: int, q: np.ndarray, dq: np.ndarray, ) -> np.ndarray:
+        """
+        Computes the Geometric Jacobian from frame 0 to frame k.
+
+        Args:
+            k (int): Index of the frame up to which the Geometric Jacobian is computed.
+            q (np.ndarray): Generalized coordinates vector (e.g., joint angles).
+            dq (np.ndarray): Generalized velocity vector.
+
+        Returns:
+            np.ndarray: Resulting 6x6 Geometric Jacobian matrix.
+        """
+        # Extraction of director vectors for translation and rotation
+        LamT = self.lam[:, 0:3] # Traslational direction 
+        LamR = self.lam[:, 3:6] # Rotational direction 
+
+        Jg_k = np.zeros((6,len(q)))
+
+        for i in range(k):
+
+            # Compute FK form frame i-1 to i 
+            S = skew(LamR[i,:3])
+            Ri = np.eye(3) + S * np.sin(q[i]) + S @ S * (1 - np.cos(q[i]))
+            di = self.d[i,:3].reshape(3, 1)
+
+            Ti = np.block([
+                [              Ri, di + LamT[i].reshape(3, 1) * q[i] ],
+                [np.zeros((1, 3)),                                 1 ]
+            ])
+
+            # Plucker Operator X
+            X = np.block([[            Ti[:3,:3].T, -Ti[:3,:3].T@skew(Ti[:3,3].T) ],
+                          [ np.zeros((3,3)),                          Ti[:3,:3].T ]
+                          ])
+            
+            # Compute Geometric Jacobian
+            LAM = np.zeros((6,len(q)))
+            LAM[:,i] = self.lam[i,:]
+            Jg_k = X@Jg_k + LAM
+        
+        return Jg_k

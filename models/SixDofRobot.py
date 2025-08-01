@@ -11,3 +11,8 @@ class six_dof_robot(RobotBase):
         if k is None:
             k = len(q)
         return self.forward_kinematics.computeFK(k, q)
+    
+    def geoJac(self, q: np.ndarray, dq: np.ndarray, k: int = None):
+        if k is None:
+            k = len(q)
+        return self.forward_kinematics.compute_geometricJacobian(k, q, dq)

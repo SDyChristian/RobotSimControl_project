@@ -3,9 +3,9 @@ import numpy as np
 def R2RPY(R: np.ndarray) -> np.ndarray:
     # ZYX (roll-pitch-yaw)
 
-    pitch = np.arcsin(-R[2, 0])
-    roll = np.arctan2(R[2, 1], R[2, 2])
-    yaw = np.arctan2(R[1, 0], R[0, 0])
+    pitch = np.arctan(-R[2, 0]/(np.sqrt(R[0,0]*R[0,0] + R[1,0]*R[1,0])))
+    roll = np.arctan2(R[2, 1]/np.cos(pitch), R[2, 2]/np.cos(pitch))
+    yaw = np.arctan2(R[1, 0]/np.cos(pitch), R[0, 0]/np.cos(pitch))
 
     return np.array([roll, pitch, yaw])
 

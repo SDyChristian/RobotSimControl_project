@@ -100,7 +100,7 @@ class Kinematics:
     def compute_AnalyticJacobian(self, k: int, q: np.ndarray) -> np.ndarray:
 
         # Get Geometric Jacobian
-        Jg = self.compute_geometricJacobian(6,q)
+        Jg1 = self.compute_geometricJacobian(6,q)
 
         # Get Forward Kinematics
         T = self.computeFK(k, q)
@@ -109,14 +109,19 @@ class Kinematics:
         # Get Attitude Operator
         Jth0 = Jth_RPY(th)
 
+        Re = np.block([
+                    [T[:3,:3], np.zeros((3,3))],
+                    [np.zeros((3,3)), T[:3,:3]]
+                     ])
+
         # --- Compute Jx of \nu = Jx dx ---
         Jx0 = np.block([
-            [     T[:3,:3].T, np.zeros((3,3))],
-            [np.zeros((3,3)), T[:3,:3].T@Jth0]
+            [ np.eye(3), np.zeros((3,3))],
+            [np.zeros((3,3)), Jth0]
         ])
         # --- ---
 
         # Compute Analytic Jacobian Ja
-        Ja = np.linalg.inv(Jx0)*Jg
+        Ja = np.linalg.inv(Jx0)@Re@Jg1 # = Jg0 = Re@Jg1
 
         return Ja

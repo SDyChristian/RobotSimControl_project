@@ -1,6 +1,7 @@
 from config.robot_config import lam, d
 from models.SixDofRobot import six_dof_robot
 import numpy as np
+from utils.AttitudeConversion import R2RPY, Jth_RPY
 
 # Generalized Coordinates
 q = np.array([0, 0, 0, 0, 0, 0])
@@ -13,9 +14,8 @@ if __name__ == "__main__":
     Jg = robot_arm.geoJac(q,k)
     Ja = robot_arm.AnaJac(q,k)
 
-    print("Forward Kinematics result:")
-    print(T)
     print("Geometric Jacobian result:")
     print(Jg)
     print("Analytic Jacobian result:")
     print(Ja)
+

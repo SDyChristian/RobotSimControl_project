@@ -13,10 +13,15 @@ class RobotBase(ABC):
 
     @abstractmethod
     def geoJac(self, q: np.ndarray, k: int = None):
-        """Compute forward kinematics."""
+        """Compute Geometric Jacobian."""
         pass
 
     @abstractmethod
     def AnaJac(self, q: np.ndarray, k: int = None):
-        """Compute forward kinematics."""
+        """Compute Analitic Jacobian."""
+        pass
+
+    @abstractmethod
+    def ModelMatrices(self, q: np.ndarray, dq: np.ndarray):
+        """Compute Model Matrices."""
         pass

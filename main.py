@@ -1,5 +1,5 @@
 from config.robot_config import lam, d
-from models.SixDofRobot import six_dof_robot
+from robots.SixDofRobot import six_dof_robot
 import numpy as np
 from utils.AttitudeConversion import R2RPY, Jth_RPY
 

@@ -24,11 +24,12 @@ def KinControl(t, q):
     # Set desired end effector position and velocity
     xd = np.array([[0.1*np.cos(t)],
                    [0.1*np.sin(t)],
-                   [1.5],
+                   [0.1],
                    [0.1],
                    [0.1],
                    [0]
                   ])
+    
     dxd = np.array([[-0.1*np.sin(t)],
                     [0.1*np.cos(t)],
                     [0],
@@ -58,7 +59,7 @@ pose_d = []
 for time in sol.t:
     xd = np.array([[0.1*np.cos(time)],
                    [0.1*np.sin(time)],
-                   [1.5],
+                   [0.1],
                    [0.1],
                    [0.1],
                    [0]

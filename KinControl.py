@@ -1,5 +1,5 @@
 from config.robot_config import lam, d
-from models.SixDofRobot import six_dof_robot
+from robots.SixDofRobot import six_dof_robot
 from utils.AttitudeConversion import R2RPY
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt

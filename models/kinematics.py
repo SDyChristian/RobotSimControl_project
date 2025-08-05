@@ -1,6 +1,6 @@
 import numpy as np
 from utils.operators import skew
-from utils.AttitudeConversion import Jth_RPY, R2RPY
+from utils.attitude_conversion import Jth_RPY, R2RPY
 
 class Kinematics:
     def __init__(self, lam: np.ndarray, d: np.ndarray) -> None:
@@ -21,7 +21,7 @@ class Kinematics:
         self.lam = lam
         self.d = d
 
-    def compute_FK(self, k: int, q: np.ndarray) -> np.ndarray:
+    def compute_fk(self, k: int, q: np.ndarray) -> np.ndarray:
         """
         Computes the forward kinematics from frame 0 to frame k.
 
@@ -42,12 +42,12 @@ class Kinematics:
         T = np.eye(4)
 
         for i in range(k):
-            Ti = self.compute_homogeneousTransformation(q,i)
+            Ti = self.compute_homogeneous_transformation(q,i)
             T = T @ Ti
 
         return T
     
-    def compute_homogeneousTransformation(self, q: np.ndarray, i:int) -> np.ndarray:
+    def compute_homogeneous_transformation(self, q: np.ndarray, i:int) -> np.ndarray:
 
         if i < 0 or i >= len(q):
             raise IndexError(f"Index i={i} is out of range for q of length {len(q)}.")
@@ -64,7 +64,7 @@ class Kinematics:
             ])
         return Ti
     
-    def compute_geometricJacobian_recursive(self, k: int, q: np.ndarray ) -> np.ndarray:
+    def compute_geometric_jacobian_recursive(self, k: int, q: np.ndarray ) -> np.ndarray:
         """
         Computes the Geometric Jacobian from frame 0 to frame k.
 
@@ -78,12 +78,12 @@ class Kinematics:
         Jg_p = np.zeros((6,len(q)))
 
         for i in range(k):
-            Jg_k = self.compute_geometricJacobian_i(i, q, Jg_p)
+            Jg_k = self.compute_geometric_jacobian_i(i, q, Jg_p)
             Jg_p = Jg_k
             
         return Jg_k
     
-    def compute_geometricJacobian_i(self, i:int, q: np.ndarray, Jg_p: np.ndarray ) -> np.ndarray:
+    def compute_geometric_jacobian_i(self, i:int, q: np.ndarray, Jg_p: np.ndarray ) -> np.ndarray:
         # Extraction of director vectors for translation and rotation
         LamT = self.lam[:, 0:3] # Traslational direction 
         LamR = self.lam[:, 3:6] # Rotational direction 
@@ -110,13 +110,13 @@ class Kinematics:
 
         return Jg_k
     
-    def compute_AnalyticJacobian(self, k: int, q: np.ndarray) -> np.ndarray:
+    def compute_analytic_jacobian(self, k: int, q: np.ndarray) -> np.ndarray:
 
         # Get Geometric Jacobian
-        Jg1 = self.compute_geometricJacobian_recursive(6,q)
+        Jg1 = self.compute_geometric_jacobian_recursive(6,q)
 
         # Get Forward Kinematics
-        T = self.compute_FK(k, q)
+        T = self.compute_fk(k, q)
         # Get RPY angles
         th = R2RPY(T[:3,:3])
         # Get Attitude Operator
@@ -139,6 +139,6 @@ class Kinematics:
 
         return Ja
     
-    def compute_jointVelocity(self, i: int, dq_i: float ) -> np.ndarray:
+    def compute_joint_velocity(self, i: int, dq_i: float ) -> np.ndarray:
         V_qi = self.lam[i,0:6]*dq_i
         return V_qi

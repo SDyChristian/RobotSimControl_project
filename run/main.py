@@ -1,7 +1,7 @@
 from config.robot_config import lam, d, m, rc, Icm
-from robots.SixDofRobot import six_dof_robot
+from robots.six_dof_robot import six_dof_robot
 import numpy as np
-from utils.AttitudeConversion import R2RPY, Jth_RPY
+from utils.attitude_conversion import R2RPY, Jth_RPY
 
 # Generalized Coordinates
 q = np.array([0, 0, 0, 0, 0, 0])
@@ -10,11 +10,11 @@ dq = np.array([0, 0, 0, 0, 0, 0])
 if __name__ == "__main__":
     robot_arm = six_dof_robot(lam, d, m, rc, Icm)
     k = 6
-    T = robot_arm.forwardKin(q, k)
-    Jg = robot_arm.geoJac(q, k)
-    Ja = robot_arm.AnaJac(q, k)
+    T = robot_arm.forward_kin(q, k)
+    Jg = robot_arm.geo_jac(q, k)
+    Ja = robot_arm.ana_jac(q, k)
 
-    ddq = robot_arm.forwardDyn(q, dq, np.zeros((len(q),1)))
+    ddq = robot_arm.forward_dyn(q, dq, np.zeros((len(q),1)))
 
     print("Forward Kinematics result:")
     print(Jg)
@@ -25,3 +25,4 @@ if __name__ == "__main__":
     print("Froward Dynamics result:")
     print(ddq)
 
+    

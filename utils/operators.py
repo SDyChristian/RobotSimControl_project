@@ -15,7 +15,7 @@ def skew(a):
         [-v[1], v[0], 0]
     ])
 
-def extendedTranslation(a):
+def extended_translation(a):
     v = np.asarray(a).flatten()
 
     if v.size != 3:
@@ -28,7 +28,7 @@ def extendedTranslation(a):
 
     return ET
 
-def SkewMatrix6D(a):
+def skew_matrix_6D(a):
     v = np.asarray(a).flatten()
 
     if v.size != 6:
@@ -41,7 +41,7 @@ def SkewMatrix6D(a):
 
     return Om
 
-def PlukerOperator(Ti: np.ndarray):
+def pluker_operator(Ti: np.ndarray):
     
     # Plucker Operator X
     X = np.block([[            Ti[:3,:3].T, -Ti[:3,:3].T@skew(Ti[:3,3].T) ],

@@ -7,21 +7,21 @@ class RobotBase(ABC):
         self.d = d
 
     @abstractmethod
-    def forwardKin(self, q: np.ndarray, k: int = None):
+    def forward_kin(self, q: np.ndarray, k: int = None):
         """Compute forward kinematics."""
         pass
 
     @abstractmethod
-    def geoJac(self, q: np.ndarray, k: int = None):
+    def geo_jac(self, q: np.ndarray, k: int = None):
         """Compute Geometric Jacobian."""
         pass
 
     @abstractmethod
-    def AnaJac(self, q: np.ndarray, k: int = None):
+    def ana_jac(self, q: np.ndarray, k: int = None):
         """Compute Analitic Jacobian."""
         pass
 
     @abstractmethod
-    def forwardDyn(self, q: np.ndarray, dq: np.ndarray, tau: np.ndarray):
+    def forward_dyn(self, q: np.ndarray, dq: np.ndarray, tau: np.ndarray):
         """Compute Forward Dynamics."""
         pass

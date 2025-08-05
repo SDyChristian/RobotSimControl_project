@@ -1,6 +1,6 @@
 from config.robot_config import lam, d, m, rc, Icm
-from robots.SixDofRobot import six_dof_robot
-from utils.AttitudeConversion import R2RPY
+from robots.six_dof_robot import six_dof_robot
+from utils.attitude_conversion import R2RPY
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,12 +12,12 @@ k = 6
 ##### SIMULATION #####
 
 # Kinematic control
-def RobotStateSpace(t, x):
+def robot_state_space(t, x):
     q = x[:6]
     dq = x[6:12]
     n = len(q)
     tau = np.zeros((n,1))
-    ddq = robot_arm.forwardDyn(q, dq, tau)
+    ddq = robot_arm.forward_dyn(q, dq, tau)
 
     dx = np.block([
             [dq.reshape(n,1)],
@@ -34,7 +34,7 @@ T_sim = (0,20)
 T_eval = np.linspace(T_sim[0], T_sim[1], 5000)
 
 # Solve 
-sol = solve_ivp(RobotStateSpace, T_sim, x0, t_eval=T_eval)
+sol = solve_ivp(robot_state_space, T_sim, x0, t_eval=T_eval)
 
 # Position
 plt.figure(figsize=(10, 5))

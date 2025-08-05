@@ -1,6 +1,6 @@
 from config.robot_config import lam, d
-from robots.SixDofRobot import six_dof_robot
-from utils.AttitudeConversion import R2RPY
+from robots.six_dof_robot import six_dof_robot
+from utils.attitude_conversion import R2RPY
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,10 +12,10 @@ k = 6
 ##### SIMULATION #####
 
 # Kinematic control
-def KinControl(t, q):
+def kin_control(t, q):
     k = 6
     # Get forward kinematics until end efector
-    T = robot_arm.forwardKin(q,k)
+    T = robot_arm.forward_kin(q,k)
     # Extract robot pose
     x = np.block([
         [ T[:3,3].reshape(3,1) ],
@@ -40,7 +40,7 @@ def KinControl(t, q):
     # --- Kinematic Control ---
     K = np.eye(6)
     e = x-xd # Compute Error
-    Ja = robot_arm.AnaJac(q,k) # Compute Analytic Jacobian
+    Ja = robot_arm.ana_jac(q,k) # Compute Analytic Jacobian
     dqd = np.linalg.pinv(Ja)@(dxd-K@e)
 
     return dqd.flatten()
@@ -52,7 +52,7 @@ T_sim = (0,20)
 T_eval = np.linspace(T_sim[0], T_sim[1], 5000)
 
 # Solve 
-sol = solve_ivp(KinControl, T_sim, q0, t_eval=T_eval)
+sol = solve_ivp(kin_control, T_sim, q0, t_eval=T_eval)
 
 # Plot
 pose_d = []
@@ -70,7 +70,7 @@ pose_d = np.array(pose_d)  # (N, 6)
 
 pose = []
 for q in sol.y.T:
-    T = robot_arm.forwardKin(q, k)
+    T = robot_arm.forward_kin(q, k)
     x = np.block([
         [T[:3, 3].reshape(3, 1)],
         [R2RPY(T[:3, :3]).reshape(3, 1)]

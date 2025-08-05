@@ -22,6 +22,6 @@ class RobotBase(ABC):
         pass
 
     @abstractmethod
-    def ModelMatrices(self, q: np.ndarray, dq: np.ndarray):
-        """Compute Model Matrices."""
+    def forwardDyn(self, q: np.ndarray, dq: np.ndarray, tau: np.ndarray):
+        """Compute Forward Dynamics."""
         pass

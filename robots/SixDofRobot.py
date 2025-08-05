@@ -15,24 +15,24 @@ class six_dof_robot(RobotBase):
 
         self.kinematics = Kinematics(lam, d)
         if m is not None and rc is not None and Icm is not None:
-            self.dynamics = Dynamics(lam, d)
+            self.dynamics = Dynamics(self.kinematics, m, rc, Icm)
         else:
             self.dynamics = None
 
     def forwardKin(self, q: np.ndarray, k: int = None):
         if k is None:
             k = len(q)
-        return self.kinematics.computeFK(k, q)
+        return self.kinematics.compute_FK(k, q)
     
     def geoJac(self, q: np.ndarray, k: int = None):
         if k is None:
             k = len(q)
-        return self.kinematics.compute_geometricJacobian(k, q)
+        return self.kinematics.compute_geometricJacobian_recursive(k, q)
     
     def AnaJac(self, q: np.ndarray, k: int = None):
         if k is None:
             k = len(q)
         return self.kinematics.compute_AnalyticJacobian(k, q)
     
-    def ModelMatrices(self, q: np.ndarray, dq: np.ndarray):
-        return self.dynamics.compute_ModelMatrices(k, q)
+    def forwardDyn(self, q: np.ndarray, dq: np.ndarray, tau: np.ndarray):
+        return self.dynamics.compute_ForwardDynamics(q, dq, tau)

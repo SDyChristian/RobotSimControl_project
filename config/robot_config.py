@@ -26,7 +26,7 @@ d = np.array([
 ])
 
 # Mass for each robot link
-m = np.array([ [0.9531, 0.42, 0.357, 0.241, 0.372, 0.085] ])
+m = np.array([0.9531, 0.42, 0.357, 0.241, 0.372, 0.085])
 
 # Diagnoal Elements of Inertia Tensor
 Icm = np.array([

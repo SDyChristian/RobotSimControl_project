@@ -1,15 +1,22 @@
-# Robot Kinematics in Python
+# 🤖 Robot Simulation and Control Library
 
-This project implements a modular and extensible framework for computing the forward kinematics of a serial robot using Python and NumPy.
+This project provides a **modular, extensible, and fully numerical framework** for simulating and controlling serial robotic manipulators using **Python** and **NumPy**.
 
-It is structured using object-oriented programming and designed for future extensions such as control, dynamics, or simulation tools.
+Designed with object-oriented principles, this library enables you to implement essential robotic algorithms without relying on symbolic computation or external simulation platforms. It is intended for both educational and research purposes, offering a solid base for extensions into advanced modeling and control.
 
-## 📌 Features
+---
 
-- Forward kinematics based on homogeneous transformation matrices  
-- Skew-symmetric matrix utility for rotation computations  
-- Modular structure (separated into config, models, kinematics, and utilities)  
-- Easily extendable for dynamic modeling or control algorithms  
+## 🚀 Features
+
+- ✅ **Forward Kinematics** using homogeneous transformation matrices  
+- ✅ **Geometric and Analytic Jacobian** computation  
+- ✅ **Inverse Dynamics** with the recursive Newton–Euler algorithm  
+- ✅ **Skew-symmetric matrix utilities** for efficient rotation computations  
+- ✅ **Modular architecture**: clear separation between configuration, models, kinematics, dynamics, and utilities  
+- ✅ **Fully numerical**: no symbolic algebra or external tool dependencies  
+- ✅ **Easily extendable** for dynamic modeling, trajectory planning, or advanced control schemes  
+
+---
 
 ## 🔧 Requirements
 
